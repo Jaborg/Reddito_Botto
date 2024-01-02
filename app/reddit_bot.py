@@ -26,10 +26,6 @@ class RedditBot:
             password = self.password,
             user_agent = self.user_agent,
         )
-        print(f"Client ID: {os.environ.get('CLIENT_ID')}")
-        print(f"Client Secret: {os.environ.get('CLIENT_SECRET')}")
-        print(f"Username: {os.environ.get('REDDIT_USERNAME')}")
-        print(f"Password: {os.environ.get('PASSWORD')}")
         return reddit_instance
     
     def identifySubreddit(self):
@@ -50,10 +46,11 @@ class RedditBot:
                 logging.info("Comment identified")
                 # Reply to the comment
                 reply_text = "How Orwellian!"
-                comment.reply(reply_text)
-                logging.info(f'Replied to comment by {comment.author} in r/{self.subreddit_name}')
+                logging.critical(f"The comment which contains {self.trigger_phrase} is {comment.body} ")
+                # comment.reply(reply_text)
+                # logging.critical(f'Replied to comment by {comment.author} in r/{self.subreddit_name}')
     
-            logging.info(f'Going through comment {count}...')
+            logging.critical(f'Going through comment {count}...')
             time.sleep(1)
             count += 1
             
