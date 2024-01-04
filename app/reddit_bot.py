@@ -3,7 +3,10 @@ import time
 import logging
 import os
 
+
+from text_analysis import get_sentiment_score,calculate_mean
 from secrets import RedditCredentials
+
 
 class RedditBot:
 
@@ -41,20 +44,25 @@ class RedditBot:
     
         logging.info(f'Bot is now active in r/{self.subreddit_name}')
         count = 0
+        sentiment_score = []
         for comment in subreddit_object.stream.comments():
             if self.trigger_phrase in comment.body:
+                sentiment = get_sentiment_score(comment.body)
+                sentiment_score.append(sentiment)
+                mean_so_far = calculate_mean(sentiment_score)
+
                 logging.info("Comment identified")
-                # Reply to the comment
-                reply_text = "How Orwellian!"
-                logging.critical(f"The comment which contains {self.trigger_phrase} is {comment.body} ")
-                # comment.reply(reply_text)
-                # logging.critical(f'Replied to comment by {comment.author} in r/{self.subreddit_name}')
+                logging.info(f"The comment which contains {self.trigger_phrase} is: \n {comment.body} ")
+                logging.info(f"\n The sentiment score is which contains {sentiment} ")
+                logging.info(f"\n The overall sentiment score for comments with {self.trigger_phrase} in {self.subreddit_name} is: \n {mean_so_far} ")
+                time.sleep(5)
+        
     
-            logging.critical(f'Going through comment {count}...')
-            time.sleep(1)
+            logging.info(f'Going through comment {count}...')
             count += 1
             
 
     def stopReplyLoop(self):
         
         return
+
