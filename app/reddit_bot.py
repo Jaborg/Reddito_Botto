@@ -6,7 +6,7 @@ import os
 from prawcore.exceptions import ResponseException
 
 from text_analysis import get_sentiment_score,calculate_mean
-from secrets import RedditCredentials
+from constants import RedditCredentials
 
 
 class RedditBot:
