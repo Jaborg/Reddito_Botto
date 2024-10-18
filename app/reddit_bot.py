@@ -3,6 +3,7 @@ import time
 import logging
 import os
 
+from prawcore.exceptions import ResponseException
 
 from text_analysis import get_sentiment_score,calculate_mean
 from secrets import RedditCredentials
@@ -21,6 +22,12 @@ class RedditBot:
         self.password = os.environ.get(RedditCredentials.PASSWORD.value)
         self.user_agent = "Bot for Jaborg"
 
+    def print_instance_attributes(self):
+        """Print all instance attributes and their values"""
+        print("Current instance attributes:")
+        for attr, value in vars(self).items():
+            print(f"{attr}: {value}")
+
     def createInstance(self):
         reddit_instance = praw.Reddit(
             client_id = self.client_id,
@@ -37,14 +44,15 @@ class RedditBot:
         subreddit_object = reddit.subreddit(self.subreddit_name)
         return subreddit_object
 
-
     def startReplyLoop(self):
         # Main loop
+        self.print_instance_attributes()
         subreddit_object = self.identifySubreddit()
     
         logging.info(f'Bot is now active in r/{self.subreddit_name}')
         count = 0
         sentiment_score = []
+        # Use a try-except block to catch and handle the 401 error
         for comment in subreddit_object.stream.comments():
             if self.trigger_phrase in comment.body:
                 sentiment = get_sentiment_score(comment.body)
@@ -57,9 +65,10 @@ class RedditBot:
                 logging.info(f"\n The overall sentiment score for comments with {self.trigger_phrase} in {self.subreddit_name} is: \n {mean_so_far} ")
                 time.sleep(5)
         
-    
+        
             logging.info(f'Going through comment {count}...')
             count += 1
+
             
 
     def stopReplyLoop(self):
