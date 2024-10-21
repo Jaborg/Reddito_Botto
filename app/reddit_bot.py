@@ -7,7 +7,7 @@ from prawcore.exceptions import ResponseException
 
 from constants import RedditCredentials
 from gen_ai_utils import AI_Response
-
+from connection import ReplyDatabase
 
 class RedditBot:
 
@@ -20,6 +20,7 @@ class RedditBot:
         self.reddit_username = os.environ.get(RedditCredentials.REDDIT_USERNAME.value)
         self.password = os.environ.get(RedditCredentials.PASSWORD.value)
         self.user_agent = "Bot for Jaborg"
+        self.db = ReplyDatabase()
 
     def createInstance(self):
         reddit_instance = praw.Reddit(
@@ -53,11 +54,21 @@ class RedditBot:
             if self.trigger_phrase in submission.title:
                 logging.info("Post identified")
                 logging.info(f"The post which contains {self.trigger_phrase} is: \n {submission.title} \n ")
-                response = self.generateResponsetoPost(submission.title)
-                logging.info('Commenting' , response)
-                submission.reply(response)
-                break
+                if not self.db.check_reply_exists(submission.title):
+                    response = self.generateResponsetoPost(submission.title)
+                    logging.info('Commenting: %s', response)
+                    
+                    # Reply to the submission
+                    submission.reply(response)
+
+                    # Insert the new reply into the database
+                    self.db.insert_reply(submission.title, response)
+                    break
+                else:
+                    logging.info(f"Already replied to the post: {submission.title}")
+
         logging.info(batch_posts)
+        
         
             
 

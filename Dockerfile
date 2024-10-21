@@ -10,6 +10,7 @@ COPY requirements.txt .
 COPY Makefile .
 
 # Install dependencies
+RUN apt-get update && apt-get install -y make build-essential
 RUN python3 -m venv env
 RUN env/bin/python3 -m pip install --upgrade pip
 RUN env/bin/pip3 install -r requirements.txt

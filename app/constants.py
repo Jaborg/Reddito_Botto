@@ -8,5 +8,5 @@ class RedditCredentials(Enum):
     REDDIT_USERNAME = 'REDDIT_USERNAME'
     PASSWORD = 'PASSWORD'
 
-subreddit = os.getenv('SUBREDDIT', 'WhitePeopleTwitter')
-keyword = os.getenv('KEYWORD', 'Trump')
+subreddit = os.getenv('SUBREDDIT')
+keyword = os.getenv('KEYWORD')
