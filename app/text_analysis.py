@@ -1,10 +1,10 @@
 from textblob import TextBlob
 
 
-
 def get_sentiment_score(sentence):
     analysis = TextBlob(sentence)
     return analysis.sentiment.polarity
+
 
 def calculate_mean(numbers):
     if not numbers:
