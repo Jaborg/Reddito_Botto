@@ -44,7 +44,7 @@ class RedditBot:
     def generateResponsetoPost(self, title_of_submission):
         response = AI_Response(
             title_of_submission,
-            "Make a casual comment about this topic, lamenting the erosion of American democracy, keep it under 75 words",
+            "Make a casual comment about this topic, lamenting the erosion of American democracy, keep it under 125 words",
         )
         return response.create_response()
 
