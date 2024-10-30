@@ -44,3 +44,7 @@ jobs:
       - name: Run Docker Compose
         run: |
           docker compose up -d
+
+      - name: Show Container Logs
+        run: |
+          docker logs reddit_bot_1
