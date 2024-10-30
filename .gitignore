@@ -1,11 +1,6 @@
 secrets.py
 env
 
-# Ignore Docker Compose files
-docker-compose.yml
-docker-compose.override.yml
-docker-compose.prod.yml  # Add specific compose files if needed
-
 .terraform
 *.tfstate
 *.tfstate.backup
