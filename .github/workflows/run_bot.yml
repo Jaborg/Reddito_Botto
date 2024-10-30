@@ -37,6 +37,10 @@ jobs:
         run: |
           docker build -t reddit-bot:latest -f Dockerfile .
       
+      - name: Check for docker-compose.yml
+        run: |
+          ls -al
+
       - name: Run Docker Compose
         run: |
           docker compose up -d
